@@ -87,7 +87,7 @@ function draw() {
   webgl.clear(webgl.COLOR_BUFFER_BIT);
   webgl.uniformMatrix4fv(unloc, false, rotateY(angle));
   webgl.uniformMatrix4fv(unloc2, false, rotateX(angle));
-  webgl.uniformMatrix4fv(unloc3, false, rotateZ(angle));
+  webgl.uniformMatrix4fv(unloc3, false, rotateZ(angle+Math.PI/2));
   webgl.uniform3f(colorloc, 0.0, 1.0, 1.0);
   webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
   webgl.uniform3f(colorloc, 1.0, 1.0, 0.0);
@@ -119,6 +119,6 @@ function rotateX(angle) {
 function rotateZ(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
-  return [Cosine, Sine, 0, 0, -Sine, Cosine, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+  return [Cosine, -Sine, 0, 0, Sine, Cosine, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 }
 draw();
