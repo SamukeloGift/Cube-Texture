@@ -17,13 +17,25 @@ if (!webgl) {
 }
 let cubeVert = new Float32Array([
   //Front Face
-  0.5, 0.5, 0.3, 0.5, -0.5, 0.3, -0.5, -0.5, 0.3, -0.5, 0.5, 0.3,
+  0.5, 0.5, 0.5,
+   0.5, -0.5, 0.5,
+    -0.5, -0.5, 0.5,
+     -0.5, 0.5, 0.5,
   //Back Face
-  0.5, 0.5, -0.3, 0.5, -0.5, -0.3, -0.5, -0.5, -0.3, -0.5, 0.5, -0.3,
+  0.5, 0.5, -0.5,
+   0.5, -0.5, -0.5,
+    -0.5, -0.5, -0.5,
+     -0.5, 0.5, -0.5,
   //Left Side
-  -0.5, 0.5, 0.3, -0.5, -0.5, 0.3, -0.5, -0.5, -0.3, -0.5, 0.5, -0.3,
+  -0.5, 0.5, 0.5,
+   -0.5, -0.5, 0.5,
+    -0.5, -0.5, -0.5,
+     -0.5, 0.5, -0.5,
   //Right Side
-  0.5, -0.5, 0.3, 0.5, 0.5, 0.3, 0.5, -0.5, -0.3, 0.5, 0.5, -0.3,
+  0.5, -0.5, 0.5,
+   0.5, 0.5, 0.5,
+    0.5, -0.5, -0.5,
+     0.5, 0.5, -0.5,
   //TOP
   0.5, 0.5, 0.3, -0.5, 0.5, 0.3, 0.5, 0.5, -0.3, -0.5, 0.5, -0.3,
   //Buttom side
@@ -42,7 +54,7 @@ uniform mat4 rotateX;
 uniform mat4 rotateZ;
 void main()
 {
-    gl_Position = rotateX*rotateY*rotateZ*vec4(vecposition, 1.0);
+    gl_Position = rotateY*vec4(vecposition, 1.0);
     gl_PointSize = 5.0;
 }
 `;
@@ -87,7 +99,7 @@ function draw() {
   webgl.clear(webgl.COLOR_BUFFER_BIT);
   webgl.uniformMatrix4fv(unloc, false, rotateY(angle));
   webgl.uniformMatrix4fv(unloc2, false, rotateX(angle));
-  webgl.uniformMatrix4fv(unloc3, false, rotateZ(angle+Math.PI/2));
+  webgl.uniformMatrix4fv(unloc3, false, rotateZ(angle));
   webgl.uniform3f(colorloc, 0.0, 1.0, 1.0);
   webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
   webgl.uniform3f(colorloc, 1.0, 1.0, 0.0);
@@ -98,27 +110,29 @@ function draw() {
   webgl.drawArrays(webgl.TRIANGLE_STRIP, 12, 4);
   webgl.uniform3f(colorloc, 1, 0.0, 0.1);
   webgl.drawArrays(webgl.TRIANGLE_STRIP, 16, 4);
-  webgl.uniform3f(colorloc, 1, 1, 1);
+  webgl.uniform3f(colorloc, 0, 0.5 , 0.5);
   webgl.drawArrays(webgl.TRIANGLE_STRIP, 20, 4);
   angle += 0.01;
   window.requestAnimationFrame(draw);
 }
-function idMat() {
-  return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-}
 function rotateY(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
-  return [Cosine, 0, -Sine, 0, 0, 1, 0, 0, Sine, 0, Cosine, 0, 0, 0, 0, 1];
+  return new Float32Array([Cosine, 0, Sine, 0, 0, 1, 0, 0, -Sine, 0, Cosine, 0, 0, 0, 0, 1]);
 }
 function rotateX(angle) {
-  let Cosine, Sine;
-  (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
-  return [1, Cosine, Sine, 0, 0, -Sine, Cosine, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-}
+    let Cosine = Math.cos(angle);
+    let Sine = Math.sin(angle);
+    return new Float32Array([
+      1, 0, 0, 0,
+      0, Cosine, -Sine, 0,
+      0, Sine, Cosine, 0,
+      0, 0, 0, 1
+    ]);
+  }
 function rotateZ(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
-  return [Cosine, -Sine, 0, 0, Sine, Cosine, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+  return new Float32Array([Cosine, -Sine, 0, 0, Sine, Cosine, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
 }
 draw();
