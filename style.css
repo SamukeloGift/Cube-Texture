@@ -1,3 +1,12 @@
 #flag{
     display: none;
 }
+canvas{
+    background-color: red;
+    position: absolute ;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 30vw;
+    width: 30vw;
+}
