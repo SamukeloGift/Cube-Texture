@@ -116,16 +116,35 @@ void main()
 let vShader = webgl.createShader(webgl.VERTEX_SHADER);
 webgl.shaderSource(vShader, vsShader);
 webgl.compileShader(vShader);
+if(!webgl.getShaderParameter(vShader, webgl.COMPILE_STATUS))
+{
+  console.log('error found! ', webgl.getShaderInfoLog(vShader));
+  webgl.deleteShader(vShader);
+}
+
 
 let fShader = webgl.createShader(webgl.FRAGMENT_SHADER);
 webgl.shaderSource(fShader, fsShader);
 webgl.compileShader(fShader);
+if(!webgl.getShaderParameter(fShader, webgl.COMPILE_STATUS))
+{
+  console.log('error found! ', webgl.getShaderInfoLog(fShader));
+  webgl.deleteShader(fShader);
+}
+
 
 let program = webgl.createProgram();
 webgl.attachShader(program, vShader);
 webgl.attachShader(program, fShader);
 webgl.linkProgram(program);
 webgl.useProgram(program);
+if(!webgl.getProgramParameter(program, webgl.LINK_STATUS))
+{
+  console.log('error found! ',webgl.getProgramInfoLog(program));
+  webgl.deleteProgram(program);
+}
+
+
 if (!webgl.getProgramParameter(program, webgl.LINK_STATUS)) {
   console.log(webgl.getProgramInfoLog(program));
 }
