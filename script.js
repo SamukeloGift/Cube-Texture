@@ -148,16 +148,16 @@ let unloc3 = webgl.getUniformLocation(program, "rotateZ");
 let colorloc = webgl.getUniformLocation(program, "color");
 
 function draw() {
-  webgl.clear(webgl.COLOR_BUFFER_BIT);
+  webgl.clear(webgl.COLOR_BUFFER_BIT) | webgl.clear(webgl.DEPTH_BUFFER_BIT);
   webgl.uniformMatrix4fv(unloc, false, rotateY(angle));
   webgl.uniformMatrix4fv(unloc2, false, rotateX(angle));
   webgl.uniformMatrix4fv(unloc3, false, rotateZ(angle));
   webgl.uniform3f(colorloc, 0.0, 1.0, 1.0);
-  webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
+  // webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
   webgl.uniform3f(colorloc, 1.0, 1.0, 0.0);
-  webgl.drawArrays(webgl.TRIANGLE_FAN, 4, 4);
+  // webgl.drawArrays(webgl.TRIANGLE_FAN, 4, 4);
   webgl.uniform3f(colorloc, 0.0, 1.0, 0.0);
-  webgl.drawArrays(webgl.TRIANGLE_FAN, 8, 4);
+  // webgl.drawArrays(webgl.TRIANGLE_FAN, 8, 4);
   webgl.uniform3f(colorloc, 0.3, 0.3, 0.0);
   webgl.drawArrays(webgl.TRIANGLE_STRIP, 12, 4);
   webgl.uniform3f(colorloc, 1, 0.0, 0.1);
