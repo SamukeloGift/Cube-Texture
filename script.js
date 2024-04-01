@@ -146,7 +146,7 @@ let unloc = webgl.getUniformLocation(program, "rotateY");
 let unloc2 = webgl.getUniformLocation(program, "rotateX");
 let unloc3 = webgl.getUniformLocation(program, "rotateZ");
 let colorloc = webgl.getUniformLocation(program, "color");
-// webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
+
 function draw() {
   webgl.clear(webgl.COLOR_BUFFER_BIT);
   webgl.uniformMatrix4fv(unloc, false, rotateY(angle));
@@ -171,66 +171,30 @@ function rotateY(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
   return new Float32Array([
-    Cosine,
-    0,
-    Sine,
-    0,
-    0,
-    1,
-    0,
-    0,
-    -Sine,
-    0,
-    Cosine,
-    0,
-    0,
-    0,
-    0,
-    1,
+    Cosine,  0, -Sine, 0,
+    0, 1, 0, 0,
+    Sine, 0, Cosine, 0,
+    0, 0, 0, 1
   ]);
 }
 function rotateX(angle) {
   let Cosine = Math.cos(angle);
   let Sine = Math.sin(angle);
   return new Float32Array([
-    1,
-    0,
-    0,
-    0,
-    0,
-    Cosine,
-    -Sine,
-    0,
-    0,
-    Sine,
-    Cosine,
-    0,
-    0,
-    0,
-    0,
-    1,
+    1, 0, 0, 0,
+    0, Cosine, -Sine, 0,
+    0, Sine, Cosine, 0,
+    0, 0, 0, 1
   ]);
 }
 function rotateZ(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
   return new Float32Array([
-    Cosine,
-    -Sine,
-    0,
-    0,
-    Sine,
-    Cosine,
-    0,
-    0,
-    0,
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    1,
+    Cosine, -Sine, 0, 0,
+    Sine, Cosine, 0, 0,
+    0, 0, 1, 0, 
+    0, 0, 0, 1,
   ]);
 }
 draw();
