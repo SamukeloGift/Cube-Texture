@@ -13,6 +13,7 @@ This project demonstrates the usage of textures in WebGL, specifically applied t
 - JavaScript
 - HTML
 - CSS
+- GLSL
 
 ## Installation
 1. Clone the repository to your local machine: https://github.com/Ivyson/Cube-Texture.git
