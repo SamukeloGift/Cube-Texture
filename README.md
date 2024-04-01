@@ -15,16 +15,12 @@ This project demonstrates the usage of textures in WebGL, specifically applied t
 - CSS
 
 ## Installation
-1. Clone the repository to your local machine:
-2. 2. Navigate to the project directory:
+1. Clone the repository to your local machine: https://github.com/Ivyson/Cube-Texture.git
+2. 2. Navigate to the project directory: cd Cube-Texture && code .
 
 ## Usage
 1. Open the `index.html` file in your web browser.
-2. Use the interactive controls to manipulate the textures applied to the cube.
-3. Experiment with different texture mapping techniques by modifying the code in `script.js`.
-
-## Examples
-Include screenshots or GIFs showcasing different texture effects and mappings achieved in your project.
+2. Experiment with different texture mapping techniques by modifying the code in `script.js`.
 
 ## Contributing
 1. Fork the repository.
