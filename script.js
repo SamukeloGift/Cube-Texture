@@ -135,6 +135,8 @@ if (!webgl.getProgramParameter(program, webgl.LINK_STATUS)) {
   console.log("error found! ", webgl.getProgramInfoLog(program));
   webgl.deleteProgram(program);
 }
+jhxbvjbdfj
+kvhjfn
 
 webgl.enable(webgl.BLEND);
 webgl.blendFunc(webgl.SRC_ALPHA, webgl.ONE_MINUS_SRC_ALPHA);
