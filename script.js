@@ -30,41 +30,23 @@ let cubeVert = new Float32Array([
   0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5,
 ]);
 let Texturecod = new Float32Array([
-    // Front face
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+  // Front face
+  0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
 
-    // Back face
-    1.0, 1.0,
-    0.0, 1.0,
-    1.0, 0.0,
-    0.0, 0.0,
+  // Back face
+  1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0,
 
-    // Top face
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+  // Top face
+  0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
 
-    // // Bottom face
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+  // // Bottom face
+  0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
 
-    // // Left face
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0,
+  // // Left face
+  0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
 
-    // // Right face
-    0.0, 1.0,
-    1.0, 1.0,
-    0.0, 0.0,
-    1.0, 0.0
+  // // Right face
+  0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
 ]);
 webgl.enable(webgl.DEPTH_TEST);
 let buffer = webgl.createBuffer();
@@ -81,13 +63,28 @@ let textBufer = webgl.createTexture();
 webgl.bindTexture(webgl.TEXTURE_2D, textBufer);
 webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
 webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
-webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.CLAMP_TO_EDGE);
-webgl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.CLAMP_TO_EDGE);
+webgl.texParameteri(
+  webgl.TEXTURE_2D,
+  webgl.TEXTURE_WRAP_S,
+  webgl.CLAMP_TO_EDGE
+);
+webgl.texParameteri(
+  webgl.TEXTURE_2D,
+  webgl.TEXTURE_WRAP_T,
+  webgl.CLAMP_TO_EDGE
+);
 
-webgl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, image);
+webgl.texImage2D(
+  webgl.TEXTURE_2D,
+  0,
+  webgl.RGBA,
+  webgl.RGBA,
+  webgl.UNSIGNED_BYTE,
+  image
+);
 
 let vsShader = `
-precision mediump float;
+precision highp float;
 attribute vec3 vecposition;
 uniform mat4 rotateY;
 uniform mat4 rotateX;
@@ -102,48 +99,46 @@ void main()
 }
 `;
 let fsShader = `
-precision mediump float;
+precision highp float;
 uniform vec3 color;
 varying vec2 fragtexture;
 uniform sampler2D fragSampler;
 void main()
 {
-
-    gl_FragColor = texture2D(fragSampler, fragtexture);
+     vec4 tex = texture2D(fragSampler, fragtexture);
+     gl_FragColor = vec4(tex.rgb,tex.a);
 }
 `;
 
 let vShader = webgl.createShader(webgl.VERTEX_SHADER);
 webgl.shaderSource(vShader, vsShader);
 webgl.compileShader(vShader);
-if(!webgl.getShaderParameter(vShader, webgl.COMPILE_STATUS))
-{
-  console.log('error found! ', webgl.getShaderInfoLog(vShader));
+if (!webgl.getShaderParameter(vShader, webgl.COMPILE_STATUS)) {
+  console.log("error found! ", webgl.getShaderInfoLog(vShader));
   webgl.deleteShader(vShader);
 }
-
 
 let fShader = webgl.createShader(webgl.FRAGMENT_SHADER);
 webgl.shaderSource(fShader, fsShader);
 webgl.compileShader(fShader);
-if(!webgl.getShaderParameter(fShader, webgl.COMPILE_STATUS))
-{
-  console.log('error found! ', webgl.getShaderInfoLog(fShader));
+if (!webgl.getShaderParameter(fShader, webgl.COMPILE_STATUS)) {
+  console.log("error found! ", webgl.getShaderInfoLog(fShader));
   webgl.deleteShader(fShader);
 }
-
 
 let program = webgl.createProgram();
 webgl.attachShader(program, vShader);
 webgl.attachShader(program, fShader);
 webgl.linkProgram(program);
 webgl.useProgram(program);
-if(!webgl.getProgramParameter(program, webgl.LINK_STATUS))
-{
-  console.log('error found! ',webgl.getProgramInfoLog(program));
+if (!webgl.getProgramParameter(program, webgl.LINK_STATUS)) {
+  console.log("error found! ", webgl.getProgramInfoLog(program));
   webgl.deleteProgram(program);
 }
 
+webgl.enable(webgl.BLEND);
+webgl.blendFunc(webgl.SRC_ALPHA, webgl.ONE_MINUS_SRC_ALPHA);
+//webgl.blendFunc(webgl.ONE, webgl.ONE_MINUS_SRC_ALPHA);
 
 if (!webgl.getProgramParameter(program, webgl.LINK_STATUS)) {
   console.log(webgl.getProgramInfoLog(program));
@@ -156,7 +151,7 @@ webgl.vertexAttribPointer(Position, 3, webgl.FLOAT, false, 0, 0);
 webgl.clearColor(0.0, 0.0, 1.0, 1.0);
 webgl.clear(webgl.COLOR_BUFFER_BIT);
 
-let textPos = webgl.getAttribLocation(program, 'vtexture');
+let textPos = webgl.getAttribLocation(program, "vtexture");
 webgl.enableVertexAttribArray(textPos);
 webgl.bindBuffer(webgl.ARRAY_BUFFER, texcoBuffer);
 webgl.vertexAttribPointer(textPos, 2, webgl.FLOAT, false, 0, 0);
@@ -190,30 +185,66 @@ function rotateY(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
   return new Float32Array([
-    Cosine,  0, -Sine, 0,
-    0, 1, 0, 0,
-    Sine, 0, Cosine, 0,
-    0, 0, 0, 1
+    Cosine,
+    0,
+    -Sine,
+    0,
+    0,
+    1,
+    0,
+    0,
+    Sine,
+    0,
+    Cosine,
+    0,
+    0,
+    0,
+    0,
+    1,
   ]);
 }
 function rotateX(angle) {
   let Cosine = Math.cos(angle);
   let Sine = Math.sin(angle);
   return new Float32Array([
-    1, 0, 0, 0,
-    0, Cosine, -Sine, 0,
-    0, Sine, Cosine, 0,
-    0, 0, 0, 1
+    1,
+    0,
+    0,
+    0,
+    0,
+    Cosine,
+    -Sine,
+    0,
+    0,
+    Sine,
+    Cosine,
+    0,
+    0,
+    0,
+    0,
+    1,
   ]);
 }
 function rotateZ(angle) {
   let Cosine, Sine;
   (Cosine = Math.cos(angle)), (Sine = Math.sin(angle));
   return new Float32Array([
-    Cosine, -Sine, 0, 0,
-    Sine, Cosine, 0, 0,
-    0, 0, 1, 0, 
-    0, 0, 0, 1,
+    Cosine,
+    -Sine,
+    0,
+    0,
+    Sine,
+    Cosine,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
   ]);
 }
 draw();
