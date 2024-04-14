@@ -25,7 +25,7 @@ This project demonstrates the usage of textures in WebGL, specifically applied t
 
 ## Contributing
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes and commit them (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/your-feature-name`).
+2. Create a new branch (`git checkout -b feature/cubefeature`).
+3. Make your changes and commit them (`git commit -am 'You can type your commit message here, please let it be as discriptive as possible'`).
+4. Push to the branch (`git push origin feature/cubefeature`).
 5. Create a new Pull Request.
